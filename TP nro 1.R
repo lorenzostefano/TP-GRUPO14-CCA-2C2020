@@ -44,7 +44,7 @@ skewness=function(x) {
   skew
 }
 
-#Distribución de las variables
+#DistribuciÃ³n de las variables
 #Rating
 ggplot(datos, aes(x = datos$Rating)) +
   geom_histogram(bins = 8, fill = "lightblue", colour = "black")+
@@ -73,19 +73,28 @@ ggplot(datos, aes(x = as.numeric(sub("%","",datos$Cocoa.Percent))/100)) +
 skewness(as.numeric(sub("%","",datos$Cocoa.Percent))/100)
 mean(as.numeric(sub("%","",datos$Cocoa.Percent))/100)
 
-#Años
+#AÃ±os
 ggplot(datos, aes(x = Review.Date)) +
   geom_histogram(bins = 6, fill = "lightblue", colour = "black")+
   labs(title = 'Histograma',
-       x = 'Años',
+       x = 'AÃ±os',
        y = 'Conteos',
-       subtitle = 'Año de reseña')+
+       subtitle = 'AÃ±o de reseÃ±a')+
   coord_cartesian(xlim = c(2006, 2018))
 
 skewness(datos$Review.Date)
 mean(datos$Review.Date)
 
 #Outliers
+
+boxplot(datos$Rating,horizontal = T)
+mtext(paste("Boxplot Rating"))
+hist(datos$Rating)
+boxplot.stats(datos$Rating)$out #muestra los outliers
+
+boxplot(as.numeric(sub("%","",datos$Cocoa.Percent))/100,horizontal = T,cex=.5)
+hist(as.numeric(sub("%","",datos$Cocoa.Percent))/100, main = "Histograma % Cocoa",xlab =  "Histograma % Cocoa")
+boxplot.stats(as.numeric(sub("%","",datos$Cocoa.Percent))/100)$out #muestra los outliers
 
 ggplot(datos, (aes(x = Rating))) +
   geom_boxplot(fill="lightblue")+
@@ -107,7 +116,7 @@ ggplot(datos, (aes(x = as.numeric(sub("%","",datos$Cocoa.Percent))/100))) +
 install.packages("dplyr") #nos sirve para agrupar datos y filtrar
 library("dplyr")
 
-CMaker<- datos %>% group_by("CompanyÂ..Maker.if.known." ) %>% summarise (mean(Rating))
+CMaker<- datos %>% group_by("CompanyÃ‚..Maker.if.known." ) %>% summarise (mean(Rating))
 names(CMaker)[2]<-"Average Rating"
 
 write.csv2(CMaker,paste(path="CompanyMaker.csv"))
@@ -288,7 +297,7 @@ datos$Cocoa.Percent<-as.numeric(sub("%","",datos$Cocoa.Percent))/100
 
 #EJERCICIO 2)2) #Asignamos un grupo a cada variable y toma el valor promedio - continua
 
-CM<- datos %>% group_by("CompanyÂ..Maker.if.known.") %>% summarise (mean(Rating))
+CM<- datos %>% group_by("CompanyÃ‚..Maker.if.known.") %>% summarise (mean(Rating))
 SB<- datos %>% group_by("Specific.Bean.Origin.or.Bar.Name") %>% summarise (mean(Rating))
 RD<- datos %>% group_by("Review.Date") %>% summarise (mean(Rating))
 CP<- datos %>% group_by("Cocoa.Percent" ) %>% summarise (mean(Rating))
@@ -303,7 +312,7 @@ nuevo<-matrix(NA,nrow = nrow(datos),ncol = 7)
 
 for (i in 1:nrow(datos)){
   for(j in 1:nrow(CM)){
-    if (datos$CompanyÂ..Maker.if.known.[i]==CM$Company..Maker.if.known.[j]){
+    if (datos$CompanyÃ‚..Maker.if.known.[i]==CM$Company..Maker.if.known.[j]){
       nuevo[i,1]<-CM$`mean(Rating)`[j]
     }
   }
